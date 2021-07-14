@@ -1,10 +1,11 @@
 import style from './Message.css';
 
 function Message(props) {
+
 	return (
-		<p className="Message">
-			Message: { props.text }
-		</p>
+		<div className={`message ${props.isBot ? 'bot-message' : ''} `}>
+			<p>{ props.text }</p>
+		</div>
 	);
 }
 
