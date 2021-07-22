@@ -1,11 +1,31 @@
 import './App.css';
-import Message from './components/message/Message';
 import React, { useState, useEffect } from 'react';
 
 
+import MessageList from './components/messageList/MessageList';
+import InputForm from './components/inputForm/InputForm';
+import ChatList from './components/chatList/ChatList';
+
+
 function App() {
-	const [messageList, setMessageList] = useState([]);
 	
+	const [chatList, setChatList] = useState([
+		{
+			id: '236ghjgjh23gjh2',
+			name: 'Bot'
+		},
+		{
+			id: 'fjejkbbras32h23',
+			name: 'Rick'
+		},
+		{
+			id: 'n43n43kj334kjh4',
+			name: 'Dungeon Master'
+		},
+	]);
+
+
+	const [messageList, setMessageList] = useState([]);
 	const [text, setText] = useState('');
 	
 
@@ -14,38 +34,21 @@ function App() {
 			const lastAuthor = messageList[messageList.length - 1].author;
 			if (lastAuthor !== 'Bot') {
 				const botMessage = {
-					id: getLastItemId(messageList),
+					id: getLastItemId(messageList) + 1,
 					isBot: true,
 					author: 'Bot',
 					text: `${lastAuthor}, hello!`
 				}
-				setMessageList([
-					...messageList,
-					botMessage
-				])
+				setTimeout(() => {
+					setMessageList([
+						...messageList,
+						botMessage
+					])
+				}, 1000);
 			}
 		}
 	}, [messageList])
 
-	const handleChangeText = (event) => {
-		setText(event.target.value);
-	}
-
-	const handleMessagePushed = (event) => {
-		event.preventDefault();
-		
-		const preparedMessage = {
-			id: getLastItemId(messageList),
-			author: 'User',
-			text
-		}
-		setMessageList([
-			...messageList,
-			preparedMessage
-		])
-		setText('');
-	}
-	
 
 	const getLastItemId = (arr) => {
 		const lastItem = arr[messageList.length - 1];
@@ -55,23 +58,25 @@ function App() {
 
 	return (
 		<div className="App">
-			<div className="messages">
-				{
-					messageList.map(message => {
-						return <Message
-							author={message.author}
-							text={message.text} 
-							key={message.id}
-							isBot={message.isBot}
-						></Message>
-					})
-				}
+			<div className="chatlist">
+				<ChatList
+					lists={chatList}
+				/>
 			</div>
 
-			<form onSubmit={handleMessagePushed} className="form">
-				<input className="input" type="text" value={text} onChange={handleChangeText} placeholder="Text" />
-				<input type="submit" className="button" value="Send"/>
-			</form>
+
+			
+			<div className="chat">
+				<MessageList list={messageList} />
+				
+				<InputForm
+					text={text}
+					setText={setText}
+					setMessageList={setMessageList}
+					messageList={messageList}
+				/>
+			</div>
+			
 
 		</div>
 	);
