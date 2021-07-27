@@ -1,11 +1,45 @@
 import './App.css';
-import Message from './components/message/Message';
 import React, { useState, useEffect } from 'react';
 
 
-function App() {
-	const [messageList, setMessageList] = useState([]);
+import MessageList from './components/messageList/MessageList';
+import InputForm from './components/inputForm/InputForm';
+import ChatList from './components/chatList/ChatList';
+
+
+function App(props) {
 	
+	const [chatList, setChatList] = useState([
+		{
+			id: '236ghjgjh23gjh2',
+			name: 'Bot',
+			chatHistory: [
+				{
+					name: 'Trevor',
+					text: 'Hello, im Trevor',
+					isBot: false,
+				},
+				{
+					name: 'User',
+					text: 'Hello, im Trevor',
+					isBot: false,
+				}
+			]
+		},
+		{
+			id: 'fjejkbbras32h23',
+			name: 'Rick',
+			chatHistory: []
+		},
+		{
+			id: 'n43n43kj334kjh4',
+			name: 'Dungeon Master',
+			chatHistory: []
+		},
+	]);
+
+
+	const [messageList, setMessageList] = useState([]);
 	const [text, setText] = useState('');
 	
 
@@ -14,38 +48,21 @@ function App() {
 			const lastAuthor = messageList[messageList.length - 1].author;
 			if (lastAuthor !== 'Bot') {
 				const botMessage = {
-					id: getLastItemId(messageList),
+					id: getLastItemId(messageList) + 1,
 					isBot: true,
 					author: 'Bot',
 					text: `${lastAuthor}, hello!`
 				}
-				setMessageList([
-					...messageList,
-					botMessage
-				])
+				setTimeout(() => {
+					setMessageList([
+						...messageList,
+						botMessage
+					])
+				}, 1000);
 			}
 		}
 	}, [messageList])
 
-	const handleChangeText = (event) => {
-		setText(event.target.value);
-	}
-
-	const handleMessagePushed = (event) => {
-		event.preventDefault();
-		
-		const preparedMessage = {
-			id: getLastItemId(messageList),
-			author: 'User',
-			text
-		}
-		setMessageList([
-			...messageList,
-			preparedMessage
-		])
-		setText('');
-	}
-	
 
 	const getLastItemId = (arr) => {
 		const lastItem = arr[messageList.length - 1];
@@ -55,23 +72,33 @@ function App() {
 
 	return (
 		<div className="App">
-			<div className="messages">
-				{
-					messageList.map(message => {
-						return <Message
-							author={message.author}
-							text={message.text} 
-							key={message.id}
-							isBot={message.isBot}
-						></Message>
-					})
-				}
+			<div className="chatlist">
+				<ChatList
+					lists={chatList}
+					current={props.current}
+				/>
 			</div>
 
-			<form onSubmit={handleMessagePushed} className="form">
-				<input className="input" type="text" value={text} onChange={handleChangeText} placeholder="Text" />
-				<input type="submit" className="button" value="Send"/>
-			</form>
+			{
+				props.current ?
+				<div className="chat">
+					<MessageList list={ chatList.find( chat => {
+						return chat.id === props.current;
+					}).chatHistory } />
+
+					<InputForm
+						text={text}
+						setText={setText}
+						setMessageList={setMessageList}
+						messageList={messageList}
+					/>
+				</div>
+				:
+				<div className="chat chat--empty">
+					<h1>Not selected chat</h1>
+					<h2>Select chat from the left bar</h2>
+				</div>
+			}
 
 		</div>
 	);
