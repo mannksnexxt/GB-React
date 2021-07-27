@@ -7,20 +7,34 @@ import InputForm from './components/inputForm/InputForm';
 import ChatList from './components/chatList/ChatList';
 
 
-function App() {
+function App(props) {
 	
 	const [chatList, setChatList] = useState([
 		{
 			id: '236ghjgjh23gjh2',
-			name: 'Bot'
+			name: 'Bot',
+			chatHistory: [
+				{
+					name: 'Trevor',
+					text: 'Hello, im Trevor',
+					isBot: false,
+				},
+				{
+					name: 'User',
+					text: 'Hello, im Trevor',
+					isBot: false,
+				}
+			]
 		},
 		{
 			id: 'fjejkbbras32h23',
-			name: 'Rick'
+			name: 'Rick',
+			chatHistory: []
 		},
 		{
 			id: 'n43n43kj334kjh4',
-			name: 'Dungeon Master'
+			name: 'Dungeon Master',
+			chatHistory: []
 		},
 	]);
 
@@ -61,22 +75,30 @@ function App() {
 			<div className="chatlist">
 				<ChatList
 					lists={chatList}
+					current={props.current}
 				/>
 			</div>
 
+			{
+				props.current ?
+				<div className="chat">
+					<MessageList list={ chatList.find( chat => {
+						return chat.id === props.current;
+					}).chatHistory } />
 
-			
-			<div className="chat">
-				<MessageList list={messageList} />
-				
-				<InputForm
-					text={text}
-					setText={setText}
-					setMessageList={setMessageList}
-					messageList={messageList}
-				/>
-			</div>
-			
+					<InputForm
+						text={text}
+						setText={setText}
+						setMessageList={setMessageList}
+						messageList={messageList}
+					/>
+				</div>
+				:
+				<div className="chat chat--empty">
+					<h1>Not selected chat</h1>
+					<h2>Select chat from the left bar</h2>
+				</div>
+			}
 
 		</div>
 	);
