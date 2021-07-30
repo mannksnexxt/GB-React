@@ -26,10 +26,8 @@ export default function Router() {
 				</Route>
 
 				<Route
-					path="/chats/:id" 
-					render={ ({ match }) => {
-						return <App current={match.params.id}/>
-					}}
+					path="/chats/:chatId" 
+					component={ App }
 				/>
 				
 

@@ -1,30 +1,23 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 
 
-import MessageList from './components/messageList/MessageList';
-import InputForm from './components/inputForm/InputForm';
+// import MessageList from './components/messageList/MessageList';
+// import InputForm from './components/inputForm/InputForm';
 import ChatList from './components/chatList/ChatList';
+import Chat from './components/chat/Chat';
 
 
-function App(props) {
+
+
+function App() {
 	
 	const [chatList, setChatList] = useState([
 		{
 			id: '236ghjgjh23gjh2',
 			name: 'Bot',
-			chatHistory: [
-				{
-					name: 'Trevor',
-					text: 'Hello, im Trevor',
-					isBot: false,
-				},
-				{
-					name: 'User',
-					text: 'Hello, im Trevor',
-					isBot: false,
-				}
-			]
+			chatHistory: []
 		},
 		{
 			id: 'fjejkbbras32h23',
@@ -38,61 +31,24 @@ function App(props) {
 		},
 	]);
 
-
-	const [messageList, setMessageList] = useState([]);
-	const [text, setText] = useState('');
-	
-
-	useEffect(() => {
-		if (messageList.length) {
-			const lastAuthor = messageList[messageList.length - 1].author;
-			if (lastAuthor !== 'Bot') {
-				const botMessage = {
-					id: getLastItemId(messageList) + 1,
-					isBot: true,
-					author: 'Bot',
-					text: `${lastAuthor}, hello!`
-				}
-				setTimeout(() => {
-					setMessageList([
-						...messageList,
-						botMessage
-					])
-				}, 1000);
-			}
-		}
-	}, [messageList])
-
-
-	const getLastItemId = (arr) => {
-		const lastItem = arr[messageList.length - 1];
-		if (lastItem) return lastItem.id;
-		return 1;
-	}
+	const { chatId } = useParams();
 
 	return (
 		<div className="App">
 			<div className="chatlist">
 				<ChatList
 					lists={chatList}
-					current={props.current}
+					current={chatId}
 				/>
 			</div>
 
 			{
-				props.current ?
-				<div className="chat">
-					<MessageList list={ chatList.find( chat => {
-						return chat.id === props.current;
-					}).chatHistory } />
-
-					<InputForm
-						text={text}
-						setText={setText}
-						setMessageList={setMessageList}
-						messageList={messageList}
-					/>
-				</div>
+				chatId ?
+				<Chat 
+					chatList={chatList}
+					chatId={chatId}
+					setChatList={setChatList}
+				/>
 				:
 				<div className="chat chat--empty">
 					<h1>Not selected chat</h1>
