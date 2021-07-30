@@ -1,77 +1,73 @@
 import './App.css';
-import Message from './components/message/Message';
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
+
+import { connect, useDispatch, useSelector } from 'react-redux'
+import { changeName } from './actions/profile'
+import { bindActionCreators } from 'redux'
+
+import ChatList from './components/chatList/ChatList';
+import Chat from './components/chat/Chat';
+
+
+const mapStateToProps = (state) => {
+    return state.profile
+}
+
 
 
 function App() {
-	const [messageList, setMessageList] = useState([]);
 	
-	const [text, setText] = useState('');
-	
+	const [chatList, setChatList] = useState([
+		{
+			id: '236ghjgjh23gjh2',
+			name: 'Bot',
+			chatHistory: []
+		},
+		{
+			id: 'fjejkbbras32h23',
+			name: 'Rick',
+			chatHistory: []
+		},
+		{
+			id: 'n43n43kj334kjh4',
+			name: 'Dungeon Master',
+			chatHistory: []
+		},
+	]);
 
-	useEffect(() => {
-		if (messageList.length) {
-			const lastAuthor = messageList[messageList.length - 1].author;
-			if (lastAuthor !== 'Bot') {
-				const botMessage = {
-					id: getLastItemId(messageList),
-					isBot: true,
-					author: 'Bot',
-					text: `${lastAuthor}, hello!`
-				}
-				setMessageList([
-					...messageList,
-					botMessage
-				])
-			}
-		}
-	}, [messageList])
+	const { chatId } = useParams();
 
-	const handleChangeText = (event) => {
-		setText(event.target.value);
-	}
+	const dispatch = useDispatch()
+    const { name, age } = useSelector((state) => state.profile)
 
-	const handleMessagePushed = (event) => {
-		event.preventDefault();
-		
-		const preparedMessage = {
-			id: getLastItemId(messageList),
-			author: 'User',
-			text
-		}
-		setMessageList([
-			...messageList,
-			preparedMessage
-		])
-		setText('');
-	}
-	
-
-	const getLastItemId = (arr) => {
-		const lastItem = arr[messageList.length - 1];
-		if (lastItem) return lastItem.id;
-		return 1;
-	}
+	const handleNameSubmit = (newName) => {
+        dispatch(changeName(newName))
+    }
 
 	return (
 		<div className="App">
-			<div className="messages">
-				{
-					messageList.map(message => {
-						return <Message
-							author={message.author}
-							text={message.text} 
-							key={message.id}
-							isBot={message.isBot}
-						></Message>
-					})
-				}
+			<div className="chatlist">
+				<input type="text" onSubmit={handleNameSubmit} value={name}/>
+				<ChatList
+					lists={chatList}
+					current={chatId}
+				/>
 			</div>
 
-			<form onSubmit={handleMessagePushed} className="form">
-				<input className="input" type="text" value={text} onChange={handleChangeText} placeholder="Text" />
-				<input type="submit" className="button" value="Send"/>
-			</form>
+			{
+				chatId ?
+				<Chat 
+					chatList={chatList}
+					chatId={chatId}
+					setChatList={setChatList}
+				/>
+				:
+				<div className="chat chat--empty">
+					<h1>Not selected chat</h1>
+					<h2>Select chat from the left bar</h2>
+				</div>
+			}
 
 		</div>
 	);
