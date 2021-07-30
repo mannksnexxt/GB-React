@@ -2,12 +2,17 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 
+import { connect, useDispatch, useSelector } from 'react-redux'
+import { changeName } from './actions/profile'
+import { bindActionCreators } from 'redux'
 
-// import MessageList from './components/messageList/MessageList';
-// import InputForm from './components/inputForm/InputForm';
 import ChatList from './components/chatList/ChatList';
 import Chat from './components/chat/Chat';
 
+
+const mapStateToProps = (state) => {
+    return state.profile
+}
 
 
 
@@ -33,9 +38,17 @@ function App() {
 
 	const { chatId } = useParams();
 
+	const dispatch = useDispatch()
+    const { name, age } = useSelector((state) => state.profile)
+
+	const handleNameSubmit = (newName) => {
+        dispatch(changeName(newName))
+    }
+
 	return (
 		<div className="App">
 			<div className="chatlist">
+				<input type="text" onSubmit={handleNameSubmit} value={name}/>
 				<ChatList
 					lists={chatList}
 					current={chatId}
