@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom'
 import { Switch, Route, Redirect } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import App from './App'
-import ChatList from './components/chatList/ChatList'
+import Home from './components/home/Home'
+import Profile from './components/profile/Profile'
 
 
-export default function Router() {
+
+export default function Router(props) {
 	return (
 		<div className="main-block">
 			<header>
@@ -17,22 +18,22 @@ export default function Router() {
 			</header>
 		
 			<Switch>
-				<Route path="/" exact>
-					<h1>Main</h1>
+				<Route path="/" exact >
+					<Home chatList={props.chatList} setChatList={props.setChatList} />
 				</Route>
 
 				<Route path="/chats" exact>
-					<App />
+					<Home chatList={props.chatList} setChatList={props.setChatList} />
 				</Route>
 
-				<Route
-					path="/chats/:chatId" 
-					component={ App }
-				/>
+				<Route path="/chats/:chatId">
+					<Home chatList={props.chatList} setChatList={props.setChatList} />
+				</Route>
+
 				
 
 				<Route path="/profile">
-					<h1>Profile</h1>
+					<Profile />
 				</Route>
 
 				

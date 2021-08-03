@@ -55,12 +55,13 @@ function Chat(props) {
 		return 1;
 	}
 
+	const currentChat = props.chatList.find( chat => {
+		return chat.id === props.chatId;
+	});
 
 	return (
 		<div className="chat">
-			<MessageList list={ props.chatList.find( chat => {
-				return chat.id === props.chatId;
-			}).chatHistory } />
+			<MessageList list={ currentChat?.chatHistory } />
 
 			<InputForm
 				text={text}
