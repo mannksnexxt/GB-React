@@ -1,0 +1,9 @@
+.App {
+	text-align: center;
+	height: 90%;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	column-gap: 15px;
+	justify-content: space-between;
+}
