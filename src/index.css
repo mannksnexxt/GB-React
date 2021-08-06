@@ -29,6 +29,13 @@ code {
 .main-block {
 	width: 100%;
 }
+.add-form {
+	margin-bottom: 20px;
+}
+.add-form button {
+	padding: 11px;
+	border: none;
+}
 
 header {
 	width: 100%;

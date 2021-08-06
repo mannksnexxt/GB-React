@@ -1,4 +1,4 @@
-import { CHANGE_HISTORY } from '../actions/chats'
+import { CHANGE_HISTORY, ADD_CHAT } from '../actions/chats'
 
 const initialState = {
 	chats: [
@@ -24,10 +24,28 @@ export default function reduser(state = initialState, action) {
 	switch (action.type) {
 		case CHANGE_HISTORY: {
 			const chat = state.chats.find(chat => chat.id === action.payload.chatId);
-			chat.chatHistory = action.payload.history;
-			return state.chats
+
+			chat.chatHistory.push(action.payload.message);
+			return {
+				chats: [
+					chat,
+					...state.chats.filter(ch => ch.id !== chat.id)
+				]
+			}
+		}
+		case ADD_CHAT: {
+			return {
+				chats: [
+					...state.chats,
+					{
+						id: String(Date.now()),
+						name: action.payload.chatName,
+						chatHistory: []
+					}
+				],
+			}
 		}
 		default:
-            return state
+            return state;
 	}
 }

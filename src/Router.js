@@ -19,18 +19,16 @@ export default function Router(props) {
 		
 			<Switch>
 				<Route path="/" exact >
-					<Home chatList={props.chatList} setChatList={props.setChatList} />
+					<Home/>
 				</Route>
 
 				<Route path="/chats" exact>
-					<Home chatList={props.chatList} setChatList={props.setChatList} />
+					<Home/>
 				</Route>
 
 				<Route path="/chats/:chatId">
-					<Home chatList={props.chatList} setChatList={props.setChatList} />
+					<Home/>
 				</Route>
-
-				
 
 				<Route path="/profile">
 					<Profile />

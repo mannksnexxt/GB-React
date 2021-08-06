@@ -1,5 +1,6 @@
 nav {
-	height: 93.5vh;
+	height: 86.5vh;
+	overflow-y: scroll;
 }
 
 nav a {
