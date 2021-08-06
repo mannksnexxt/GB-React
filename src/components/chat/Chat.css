@@ -1,0 +1,24 @@
+.chat {
+	justify-self: center;
+	text-align: center;
+	height: 100%;
+	width: 95%;
+	display: grid;
+	grid-template-columns: 1fr;
+	align-content: space-between;
+}
+
+.chat--empty {
+	align-content: center;
+}
+
+.chat--empty h1,
+.chat--empty h2 {
+	margin: 0;
+	opacity: .7;
+}
+.chat--empty h2 {
+	margin-top: 10px;
+	opacity: .5;
+	font-weight: normal;
+}
