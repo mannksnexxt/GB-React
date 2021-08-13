@@ -1,0 +1,9 @@
+.messages {
+	padding-top: 20px;
+	display: grid;
+	grid-template-columns: 1fr;
+	justify-items: end;
+	row-gap: 30px;
+	align-content: start;
+	overflow-y: scroll;
+}
