@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import Home from './components/home/Home'
 import Profile from './components/profile/Profile'
 import Books from './components/books/Books'
+import Signup from './components/auth/signup/Signup'
 
 
 
@@ -17,6 +18,8 @@ export default function Router(props) {
 				<Link to="/chats">Chats</Link>
 				<Link to="/profile">Profile</Link>
 				<Link to="/books">Books</Link>
+				<Link to="/login">Login</Link>
+				<Link to="/signup">Signup</Link>
 			</header>
 		
 			<Switch>
@@ -38,6 +41,10 @@ export default function Router(props) {
 
 				<Route path="/books">
 					<Books />
+				</Route>
+
+				<Route path="/signup">
+					<Signup />
 				</Route>
 
 				
